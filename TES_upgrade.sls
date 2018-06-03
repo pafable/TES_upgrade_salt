@@ -1,8 +1,8 @@
 # Create an upgrade TES dir
 /appl/tes_8.2.3:
   file.directory:
-    - user: twadmin
-    - group: twadmin
+    - user: ADMIN
+    - group: ADMIN
     - recurse:
       - user
       - group
@@ -30,13 +30,13 @@ TES_new_symlink:
 Unzip_TES:
   archive.extracted:
     - name: /appl/tes_8.2.3
-    - source: /share/Software/TES/thingserver-8.2.3-b576.zip
+    - source: /root/local/thingserver-8.2.3-b576.zip
 
 change_owner:
    file.managed:
      - source: /appl/tes_8.2.3   
-     - user: twadmin
-     - group: twadmin
+     - user: ADMIN
+     - group: ADMIN
 
 # Copy TES stores dir to upgades TES dir
 Copy_Stores:
