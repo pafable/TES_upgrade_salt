@@ -1,0 +1,78 @@
+{% set domainName = salt['cmd.shell']("cat /appl/tes/configuration.json | grep defaultDomainName | awk '{print $2}' | tr -d '"' | tr -d ','") %}
+{% set baseUrl = salt['cmd.shell']("cat /appl/tes/configuration.json | grep baseUrl | awk '{print $2}' | tr -d '"' | tr -d ','") %}
+{% set AppKey = salt['cmd.shell'](" cat /appl/tes/configuration.json | grep appKey | awk '{print $2}' | tr -d '"' | tr -d ',' | head -c 37") %}
+{% set proxyTarget = salt['cmd.shell']("cat /appl/tes/configuration.json | grep target | awk '{print $2}' | tr -d '"' | tr -d ',' | grep Thingworx") %}
+{% set webProxyTarget = salt['cmd.shell']("cat /appl/tes/configuration.json | grep target | awk '{print $2}' | tr -d '"' | tr -d ',' | grep ws")  %}
+{% set ConnString = salt['cmd.shell']("cat /appl/tes/configuration.json | grep connectionString | awk '{print $2}' | tr -d '"' | tr -d ','")  %}
+
+{
+ "port": 2019,
+ "realm": "*",
+ "httpsKeyPath": "",
+ "httpsCrtPath": "",
+ "httpsCaPath": "",
+ "enable_irs_federation": true,
+ "defaultDomainName": "{{ domainName }}",
+ "domain_id_resolver": "https://XXXXXXXXXX/ExperienceService/id-resolution/resolutions/",
+ "dbHandler": "postgresHandler",
+ "db": {
+   "datafilePath": "./stores/db.sqlite",
+   "connectionString": "{{ ConnString }}"
+ },
+ "authentication": {
+   "type": "twxUser",
+   "baseUrl": " {{ baseUrl }}",
+   "authorization": {
+     "appKey": "{{ AppKey }}",
+     "refreshRate": "300000",
+    "useAclDbBackend": false
+   }
+ },
+
+"vdp": {
+   "username" : "XXXXXXXXXXX",
+   "password" : "XXXXXXXXXXX"
+
+},
+
+ "proxies": {
+   "thingworx": {
+     "target": "{{ proxyTarget }}",
+     "autoRewrite": true,
+     "protocolRewrite": "http",
+     "secure": false,
+     "appKey": "{{ AppKey }}",
+     "blacklist": {
+       "file": "proxyBlackList.json",
+       "redirect": ""
+     }
+   }
+ },
+ "websocketProxies": {
+   "thingworx": {
+     "target": "{{ webProxyTarget }}"
+   }
+ },
+ "projects": {
+   "storePath": "./stores/projects",
+   "staticOps": {
+     "maxAge": "1 second"
+   }
+ },
+  "reps": {
+    "storePath": "./stores/reps",
+    "staticOps": {
+      "maxAge": "1 second",
+      "index": [
+        "structure.pvs"
+      ]
+    }
+  },
+  "upgrade": {
+    "storePath": "./stores/upgrade"
+  },
+  "logsPath": "/var/log/thingserver.log*",
+  "enableDatadog": true,
+  "trustProxy": true
+
+}

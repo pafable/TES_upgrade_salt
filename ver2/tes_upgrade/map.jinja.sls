@@ -1,0 +1,9 @@
+{% set newTesDir = salt['cmd.shell']("ls -1 /share/Software/TES | grep zip | cut -c13-17") %}
+{% set newTes = salt['cmd.shell']("ls -1 /share/Software/TES | grep zip  %}
+{% set tesOld = salt['cmd.shell']("ls -1 /appl/tes | grep zip") %}
+{% set domainName = salt['cmd.shell']("cat configuration.json | grep defaultDomainName | awk '{print $2}' | tr -d '"' | tr -d ','") %}
+{% set baseUrl = salt['cmd.shell']("cat configuration.json | grep baseUrl | awk '{print $2}' | tr -d '"' | tr -d ','") %}
+{% set appKey = salt['cmd.shell']("cat configuration.json | grep appKey | awk '{print $2}' | tr -d '"' | tr -d ','") %}
+{% set proxyTarget = salt['cmd.shell']("cat configuration.json | grep target | awk '{print $2}' | tr -d '"' | tr -d ',' | grep Thingworx") %}
+{% set webProxyTarget = salt['cmd.shell']("cat configuration.json | grep target | awk '{print $2}' | tr -d '"' | tr -d ',' | grep ws")  %}
+{% set ConnString = salt['cmd.shell'](cat configuration.json | grep connectionString | awk '{print $2}' | tr -d '"' | tr -d ','")  %}
